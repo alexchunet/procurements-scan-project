@@ -17,22 +17,12 @@ chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("window-size=1024,768")
 chrome_options.add_argument("--no-sandbox")
 
-# Initialize a new browser
-browser = webdriver.Chrome(chrome_options=chrome_options)
-
 client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
-
 results = client.get("3y7n-xmbj", limit=2000)
-
-# Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
 
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-
 url = 'http://projects.worldbank.org/procurement/noticeoverview?id=OP00157448'
-
-driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get(url)
 html = driver.page_source
 driver.close()
