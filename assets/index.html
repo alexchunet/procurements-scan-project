@@ -1,0 +1,99 @@
+    <!--<h1>Trifid interactive map</h1>-->
+
+    <!-- Aladin Lite CSS style file -->
+    <link rel="stylesheet" href="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css" />
+
+    <!-- Aladin Lite has a dependency on the jQuery library -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js" charset="utf-8"></script>
+
+    <!-- Aladin Lite container at requested dimensions -->
+    <div id="aladin-lite-div" style="width:100%;height:100%;"></div>
+
+    <input id="DSS" type="radio" name="survey" value="P/DSS2/color" checked><label for="DSS">DSS color<label>
+    <input id="DSS-blue" type="radio" name="survey" value="P/DSS2/blue"><label for="DSS-blue">DSS blue<label>
+    <input id="2MASS" type="radio" name="survey" value="P/2MASS/color"><label for="2MASS">2MASS<label>
+    <input id="allwise" type="radio" name="survey" value="P/allWISE/color"><label for="allwise">AllWISE<label>
+    <input id="glimpse" type="radio" name="survey" value="P/GLIMPSE360"><label for="glimpse">GLIMPSE 360<label>
+
+
+    <!-- Aladin Lite JS code -->
+    <script type="text/javascript" src="https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" charset="utf-8"></script>
+
+    <!-- Creation of Aladin Lite instance with initial parameters -->
+    <script type="text/javascript">
+        var aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:1.5, target: '05 37 5.698 -01 36 54.50', showReticle: false});
+
+        $('input[name=survey]').change(function() {
+            aladin.setImageSurvey($(this).val());
+        });
+
+        var marker1 = A.marker(84.3950446, -1.4222331, {popupTitle: 'LOG_003', popupDesc: "<div style='vertical-align:middle; display:inline;'> I must hold on ... we are soon arriving. I can see it between the clouds. </div> <img src='log03.jpg' style='width:100%;height:100%;'>"});
+        var marker2 = A.marker(84.4547634, -1.5856669, {popupTitle: 'LOG_036', popupDesc: "<div style='vertical-align:middle; display:inline;'> It is breathtaking...sadly my Rhoecos is getting more and more agitated. </div> <img src='log036.jpg' style='width:100%;height:100%;'>"});
+        var marker3 = A.marker(84.3104199, -1.6674441, {popupTitle: 'LOG_027', popupDesc: "<div style='vertical-align:middle; display:inline;'> I would never dare ask //?/.? the question. I'm too afraid to be right... </div> <img src='log027.jpg' style='width:100%;height:100%;'>"});
+        var marker4 = A.marker(84.0742596, -1.6353706, {popupTitle: 'LOG_06', popupDesc: "<div style='vertical-align:middle; display:inline;'> We are advancing at a good pace even if Camer and Sigur have already been through the door for 2 days by now. </div> <img src='log06.jpg' style='width:100%;height:100%;'>"});
+        var markerLayer = A.catalog({color: 'blue', sourceSize: 15});
+        aladin.addCatalog(markerLayer);
+        markerLayer.addSources([marker1, marker2, marker3, marker4]);
+
+        // define custom draw function
+
+        var drawFunction = function(source, canvasCtx, viewParams) {
+            canvasCtx.beginPath();
+            canvasCtx.arc(source.x, source.y, source.data['size'] * 2, 0, 2 * Math.PI, false);
+            canvasCtx.closePath();
+            canvasCtx.strokeStyle = '#c38';
+            canvasCtx.lineWidth = 3;
+            canvasCtx.globalAlpha = 0.7,
+            canvasCtx.stroke();
+            var fov = Math.max(viewParams['fov'][0], viewParams['fov'][1]);
+
+            // object name is displayed only if fov<10°
+            if (fov>10) {
+                return;
+            }
+
+            canvasCtx.globalAlpha = 0.9;
+            canvasCtx.globalAlpha = 1;
+
+            var xShift = 20;
+
+            canvasCtx.font = '15px Arial'
+            canvasCtx.fillStyle = '#eee';
+            canvasCtx.fillText(source.data['name'], source.x + xShift, source.y -4);
+
+            // object type is displayed only if fov<2°
+            if (fov>2) {
+                return;
+            }
+            canvasCtx.font = '12px Arial'
+            canvasCtx.fillStyle = '#abc';
+            canvasCtx.fillText(source.data['otype'], source.x + 2 + xShift, source.y + 10);
+        };
+
+        // Display names
+        var M01 = A.source(84.3950446, -1.4222331, {name: 'LOG_03', size: 0, otype: 'Rebirth'});
+        var M02 = A.source(84.4547634, -1.5856669, {name: 'LOG_036', size: 0, otype: 'Exodus'});
+        var M03 = A.source(84.3104199, -1.6674441, {name: 'LOG_027', size: 0, otype: 'Freedom'});
+        var M04 = A.source(84.0742596, -1.6353706, {name: 'LOG_06', size: 0, otype: 'Revelation'});
+        // create catalog layer with custom draw function
+        var cat = A.catalog({name: 'Virgo cluster', shape: drawFunction});
+        // add sources to the new layer
+        cat.addSources([M01,M02,M03,M04]);
+        aladin.addCatalog(cat);
+        
+        // Custom icons
+        //var customImg = new Image();
+        //customImg.onload = function() {
+        //    var cat = A.catalog({shape: customImg});
+        //    aladin.addCatalog(cat);
+        //    cat.addSources(A.source(84.3950446, -1.4222331));
+        //    cat.addSources(A.source(84.4547634, -1.5856669));
+        //    cat.addSources(A.source(84.3104199, -1.6674441));
+        //    cat.addSources(A.source(84.0742596, -1.6353706));
+        //};
+        //customImg.src = 'icone-cercle-gris.png';
+        var overlay = A.graphicOverlay({lineWidth: 2});
+        aladin.addOverlay(overlay);
+        overlay.add(A.polyline([[84.3950446, -1.4222331], [84.4547634, -1.5856669], [84.3104199, -1.6674441], [84.0742596, -1.6353706]], {color: '#1751ff'}));
+        
+    </script>
