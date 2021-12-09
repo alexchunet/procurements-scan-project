@@ -2,7 +2,7 @@
 
 gunicorn
 selenium
-chromedriver-binary==96.0.4664.45
+chromedriver-binary
 pandas
 sodapy
 requests
