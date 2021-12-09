@@ -11,8 +11,7 @@ ARG CHROME_VERSION="96.0.4664.45-1"
 RUN wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb \
   && apt install -y /tmp/chrome.deb \
   && rm /tmp/chrome.deb
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+# RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
 # Install Python dependencies.
 COPY requirements.txt requirements.txt
