@@ -8,3 +8,6 @@ requests
 bs4
 selenium
 webdriver-manager
+dash
+dash_bootstrap_components
+dash_html_components
