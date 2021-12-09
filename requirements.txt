@@ -8,4 +8,3 @@ sodapy
 requests
 bs4
 selenium
-webdriver
