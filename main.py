@@ -57,7 +57,7 @@ text = ' '.join(chunk for chunk in chunks if chunk)
 
 # SEND FUNCTIONS #
 def send_email(sbjt, msg):
-    fromaddr = 'alex.ch.lemac@gmail.com'
+    fromaddr = 'alex.chunet@gmail.com'
     toaddrs = 'alex.chunet@gmail.com'
     bodytext = 'From: %s\nTo: %s\nSubject: %s\n\n%s' %(fromaddr, toaddrs, sbjt, msg)
 
