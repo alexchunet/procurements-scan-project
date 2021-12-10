@@ -14,6 +14,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 import gunicorn
+import signal
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 server = app.server
@@ -74,3 +75,5 @@ else:
     send_email('No query found', 'no query found')
 
 print("SUCCESS!")
+
+os.kill(os.getpid(), signal.SIGTERM)
