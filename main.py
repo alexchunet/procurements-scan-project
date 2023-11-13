@@ -54,7 +54,7 @@ for index, row in results_df.iterrows():
     print(results_df.loc[index, 'url']['url'])
     url = results_df.loc[index, 'url']['url']
 
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
     time.sleep(5)
     html = driver.page_source
