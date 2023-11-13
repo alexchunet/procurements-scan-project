@@ -1,7 +1,7 @@
 # requirements.txt
 gunicorn
 selenium
-chromedriver-binary==96.0.4664.45
+chromedriver-binary==119.0.6045.105
 pandas
 sodapy
 requests
