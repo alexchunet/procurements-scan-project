@@ -33,28 +33,60 @@ chrome_options.add_argument("--no-sandbox")
 client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
 results = client.get("3y7n-xmbj", limit=2000)
 results_df = pd.DataFrame.from_records(results)
+results_df['scan'] = 'Not treated'
 
-url = 'http://projects.worldbank.org/procurement/noticeoverview?id=OP00157448'
-driver = webdriver.Chrome(chrome_options=chrome_options)
-driver.get(url)
-html = driver.page_source
-driver.close()
+# Correct date format
+results_df['submission_date'] = results_df['submission_date'].str.replace('T',' ').str[:-4]
+results_df['submission_date'] = pd.to_datetime(results_df['submission_date'])
 
-soup = BeautifulSoup(html, features="html.parser")
+# Filter procurement for last week
+today = pd.to_datetime("today")
+week_prior =  today - datetime.timedelta(weeks=1)
+results_df = results_df[results_df['submission_date'] >= week_prior]
 
-# kill all script and style elements
-for script in soup(["script", "style"]):
-    script.extract()    # rip it out
 
-# get text
-text = soup.get_text()
+# Open each page in a virtual browser and analyse its content
 
-# break into lines and remove leading and trailing space on each
-lines = (line.strip() for line in text.splitlines())
-# break multi-headlines into a line each
-chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-# drop blank lines
-text = ' '.join(chunk for chunk in chunks if chunk)
+results_df['scan'] = 'Not treated'
+
+for index, row in results_df.iterrows():
+    print(results_df.loc[index, 'url']['url'])
+    url = results_df.loc[index, 'url']['url']
+
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver.get(url)
+    time.sleep(5)
+    html = driver.page_source
+    driver.close()
+
+    soup = BeautifulSoup(html, features="html.parser")
+
+    # kill all script and style elements
+    for script in soup(["script", "style"]):
+        script.extract()    # rip it out
+
+    # get text
+    text = soup.get_text()
+
+    # break into lines and remove leading and trailing space on each
+    lines = (line.strip() for line in text.splitlines())
+    # break multi-headlines into a line each
+    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    # drop blank lines
+    text = ' '.join(chunk for chunk in chunks if chunk)
+
+    key_words = ['earth observation', 'Earth Observation', ' EO ', 'GIS', 'geospatial', 'geographic information', 'imagery']
+
+    if any(word in text for word in key_words):
+        results_df.loc[index, 'scan'] = 'detected'      
+        print("query found")
+    elif '403 ERROR' in text:
+        results_df.loc[index, 'scan'] = 'error'     
+        print("error")
+    else:
+        print('no match')
+
+results_df = results_df[(results_df['scan']=='detected')]
 
 # SEND FUNCTIONS #
 def send_email(sbjt, msg):
@@ -70,7 +102,7 @@ def send_email(sbjt, msg):
     server.quit()
 
 if "Contract" in text:
-    send_email('Query found', 'query found')
+    send_email('Query found', print(results_df))
 else:
     send_email('No query found', 'no query found')
 
