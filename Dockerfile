@@ -29,4 +29,4 @@ COPY . .
 #--threads 8 
 ENV TIMEOUT=0
 ENV GRACEFUL_TIMEOUT=0
-CMD exec gunicorn --bind :$PORT --workers 1 main:app 
+CMD exec gunicorn --bind :$PORT --workers 1 main:app --timout 0
