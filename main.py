@@ -6,6 +6,7 @@ import os
 import chromedriver_binary  # Adds chromedriver binary to path
 import pandas as pd
 from sodapy import Socrata
+import time
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
