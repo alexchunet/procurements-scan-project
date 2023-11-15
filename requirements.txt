@@ -1,13 +1,12 @@
 # requirements.txt
-gunicorn
-selenium
-chromedriver-binary==119.0.6045.105
+Flask==1.0.2
+gunicorn==19.9.0
+selenium==3.141.0
+chromedriver-binary==77.0.3865.40.0
 pandas
 sodapy
 requests
 bs4
-selenium
-webdriver-manager
 dash
 dash_bootstrap_components
 dash_html_components
