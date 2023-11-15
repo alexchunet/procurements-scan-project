@@ -33,7 +33,7 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 print("Options added")
 
 # Initialize a new browser
-browser = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+browser = webdriver.Chrome(chrome_options=chrome_options)
 
 print("Browser initialized")
 
