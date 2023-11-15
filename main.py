@@ -109,5 +109,3 @@ else:
     send_email('No query found', 'no query found')
 
 print("SUCCESS!")
-
-os.kill(os.getpid(), signal.SIGTERM)
