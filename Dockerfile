@@ -4,14 +4,11 @@ FROM python:3.7
 
 # Install manually all the missing libraries
 RUN apt-get update
-RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libnss3 lsb-release xdg-utils
+RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
 # Install Chrome
-# ARG CHROME_VERSION="96.0.4664.45-1"
-RUN wget --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && apt install -y /tmp/chrome.deb \
-  && rm /tmp/chrome.deb
-# RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
 # Install Python dependencies.
 COPY requirements.txt requirements.txt
@@ -26,7 +23,4 @@ COPY . .
 # webserver, with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
-#--threads 8 
-ENV TIMEOUT=0
-ENV GRACEFUL_TIMEOUT=0
-CMD exec gunicorn --bind :$PORT --workers 1 main:app --timeout 3600
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
