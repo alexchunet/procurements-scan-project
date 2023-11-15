@@ -1,6 +1,6 @@
 # requirements.txt
-selenium==4.10.0
-chromedriver-binary
+selenium==3.141.0
+chromedriver-binary==93.0.4577.63
 requests==2.26.0
 gspread==4.0.1
 pandas==1.3.3
@@ -16,4 +16,3 @@ sodapy
 dash
 dash_bootstrap_components
 dash_html_components
-webdriver-manager
