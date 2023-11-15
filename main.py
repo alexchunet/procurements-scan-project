@@ -2,8 +2,8 @@
 
 from flask import Flask, send_file
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 import chromedriver_binary 
+from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 import os
 import pandas as pd
@@ -24,7 +24,6 @@ app = Flask(__name__)
 def main():
     # The following options are required to make headless Chrome
     # work in a Docker container
-    service = Service()
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument("--remote-debugging-port=8080")
     chrome_options.add_argument("--headless")
@@ -36,7 +35,7 @@ def main():
     print("Options added")
     
     # Initialize a new browser
-    browser = webdriver.Chrome(service=service, options=chrome_options)
+    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     
     print("Browser initialized")
 
