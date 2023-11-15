@@ -1,5 +1,5 @@
 # requirements.txt
-selenium==3.141.0
+selenium==4.10.0
 chromedriver-binary
 requests==2.26.0
 gspread==4.0.1
