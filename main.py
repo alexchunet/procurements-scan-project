@@ -3,6 +3,7 @@
 from flask import Flask, send_file
 from selenium import webdriver
 import chromedriver_binary  # Adds chromedriver binary to path
+from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 import os
 import pandas as pd
@@ -28,7 +29,7 @@ chrome_options.add_argument("window-size=1024,768")
 chrome_options.add_argument("--no-sandbox")
 
 # Initialize a new browser
-browser = webdriver.Chrome(chrome_options=chrome_options)
+browser = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
 
 @app.route("/")
 def hello_world():
