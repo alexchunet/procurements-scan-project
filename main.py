@@ -23,6 +23,7 @@ app = Flask(__name__)
 # The following options are required to make headless Chrome
 # work in a Docker container
 chrome_options = webdriver.ChromeOptions()
+chromeOptions.add_argument("--remote-debugging-port=8080")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("window-size=1024,768")
