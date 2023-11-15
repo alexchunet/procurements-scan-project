@@ -2,7 +2,7 @@
 
 from flask import Flask, send_file
 from selenium import webdriver
-import chromedriver_binary  # Adds chromedriver binary to path
+import chromedriver_binary 
 from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 import os
@@ -20,25 +20,26 @@ import signal
 
 app = Flask(__name__)
 
-# The following options are required to make headless Chrome
-# work in a Docker container
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--remote-debugging-port=8080")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("window-size=1024,768")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
+@app.route("/", methods=["POST"])
+def main():
+    # The following options are required to make headless Chrome
+    # work in a Docker container
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--remote-debugging-port=8080")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("window-size=1024,768")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    
+    print("Options added")
+    
+    # Initialize a new browser
+    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    
+    print("Browser initialized")
 
-print("Options added")
-
-# Initialize a new browser
-browser = webdriver.Chrome(chrome_options=chrome_options)
-
-print("Browser initialized")
-
-@app.route("/")
-def hello_world():
+    # Query table
     client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
     results = client.get("3y7n-xmbj", limit=2000)
     results_df = pd.DataFrame.from_records(results)
@@ -62,11 +63,10 @@ def hello_world():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
     
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.get(url)
-        time.sleep(5)
-        html = driver.page_source
-        driver.close()
+        browser.get(url)
+        time.sleep(3)
+        html = browser.page_source
+        browser.close()
     
         soup = BeautifulSoup(html, features="html.parser")
     
@@ -117,3 +117,6 @@ def hello_world():
     
     print("SUCCESS!")
     return send_file(print("SUCCESS!"))
+
+if __name__ == "__main__":
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
