@@ -2,7 +2,7 @@
 
 from flask import Flask, send_file
 from selenium import webdriver
-import chromedriver_binary 
+#import chromedriver_binary 
 from webdriver_manager.chrome import ChromeDriverManager
 import datetime
 import os
