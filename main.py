@@ -57,17 +57,17 @@ def main():
     results_df['scan'] = 'Not treated'
 
     print("Main table structured")
-    
+    browser = webdriver.Chrome(service=service, options=chrome_options)
     for index, row in results_df.iterrows():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
         # Initialize a new browser
-        browser = webdriver.Chrome(service=service, options=chrome_options)
+        #browser = webdriver.Chrome(service=service, options=chrome_options)
         print("Browser initialized")
         browser.get(url)
         html = browser.page_source
         time.sleep(2)
-        browser.close()
+        #browser.close()
         time.sleep(2)
     
         soup = BeautifulSoup(html, features="html.parser")
@@ -96,6 +96,7 @@ def main():
             print("error")
         else:
             print('no match')
+    browser.close()
     
     results_df = results_df[(results_df['scan']=='detected')]
     
