@@ -55,6 +55,9 @@ def main():
     today = pd.to_datetime("today")
     week_prior =  today - datetime.timedelta(weeks=1)
     results_df = results_df[results_df['submission_date'] >= week_prior]
+
+    # Filter only procurement notices
+    results_df = results_df[results_df['notice_type'] != 'Contract Award']
     
     
     # Open each page in a virtual browser and analyse its content
@@ -67,6 +70,7 @@ def main():
     for index, row in results_df.iterrows():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
+        results_df.loc[index, 'url'] = url
         # Initialize a new browser
         #browser = webdriver.Chrome(service=service, options=chrome_options)
         browser.get(url)
@@ -91,7 +95,7 @@ def main():
         # drop blank lines
         text = ' '.join(chunk for chunk in chunks if chunk)
     
-        key_words = ['earth observation', 'Earth Observation', ' EO ', 'GIS', 'geospatial', 'geographic information', 'imagery']
+        key_words = [“satellite”, "Earth Observation", “earth observation”, “remote sensing”, “geospatial”, “ GIS ”, “imagery”, “télédétection”, “géospatial”, “satélite”, “teledetección”, “geoespacial”, “observación de la tierra”]
     
         if any(word in text for word in key_words):
             results_df.loc[index, 'scan'] = 'detected'
@@ -119,7 +123,7 @@ def main():
         # The actual mail sent
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.starttls()
-        server.login('alex.chunet@gmail.com','vnjzrrhpgbymtyms')
+        server.login(os.environ['email_p'],os.environ['pass_p'])
         server.sendmail(sender, emaillist, msg)
         server.quit()
 
