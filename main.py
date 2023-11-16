@@ -45,7 +45,7 @@ def main():
     client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
     results = client.get("3y7n-xmbj", limit=2000)
     results_df = pd.DataFrame.from_records(results)
-    results_df['scan'] = 'Not treated'
+    trigger = 0
     
     # Correct date format
     results_df['submission_date'] = results_df['submission_date'].str.replace('T',' ').str[:-4]
@@ -94,7 +94,8 @@ def main():
         key_words = ['earth observation', 'Earth Observation', ' EO ', 'GIS', 'geospatial', 'geographic information', 'imagery']
     
         if any(word in text for word in key_words):
-            results_df.loc[index, 'scan'] = 'detected'      
+            results_df.loc[index, 'scan'] = 'detected'
+            trigger=1
             print("query found")
         elif '403 ERROR' in text:
             results_df.loc[index, 'scan'] = 'error'     
