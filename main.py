@@ -18,6 +18,8 @@ import dash_bootstrap_components as dbc
 from dash import html
 import gunicorn
 import signal
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 
@@ -61,12 +63,12 @@ def main():
 
     print("Main table structured")
     browser = webdriver.Chrome(service=service, options=chrome_options)
+    print("Browser initialized")
     for index, row in results_df.iterrows():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
         # Initialize a new browser
         #browser = webdriver.Chrome(service=service, options=chrome_options)
-        print("Browser initialized")
         browser.get(url)
         html = browser.page_source
         #time.sleep(2)
@@ -103,26 +105,44 @@ def main():
     
     results_df = results_df[(results_df['scan']=='detected')]
     
-    # SEND FUNCTIONS #
+    # Notification function #
+    msg = MIMEMultipart()
+    msg['Subject'] = "WB Project Procurements screening"
+    sender = 'alex.chunet@gmail.com'
+    recipients = ['alex.chunet@gmail.com','achunet@worldbank.org'] 
+    emaillist = [elem.strip().split(',') for elem in recipients]
+
     def send_email(sbjt, msg):
-        fromaddr = 'alex.chunet@gmail.com'
         toaddrs = 'alex.chunet@gmail.com'
-        bodytext = 'From: %s\nTo: %s\nSubject: %s\n\n%s' %(fromaddr, toaddrs, sbjt, msg)
-    
+
         # The actual mail sent
         server = smtplib.SMTP('smtp.gmail.com:587')
         server.starttls()
-        server.login(os.environ['email_p'],os.environ['pass_p'])
-        server.sendmail(fromaddr, toaddrs, bodytext)
+        server.login('alex.chunet@gmail.com','vnjzrrhpgbymtyms')
+        server.sendmail(sender, emaillist, msg)
         server.quit()
-    
-    if "Contract" in text:
-        send_email('Query found', print(results_df))
+
+    # Format email
+    html = """\
+    <html>
+    <head></head>
+    <body>
+        <p1>Keywords used: ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical']</p1>
+        {0}
+    </body>
+    </html>
+    """.format(df.to_html())
+
+    part1 = MIMEText(html, 'html')
+    msg.attach(part1)
+
+    # Send 
+    if trigger == 1:
+        send_email('Query found', msg.as_string())
     else:
         send_email('No query found', 'no query found')
     
-    print("SUCCESS!")
-    return send_file(print("SUCCESS!"))
+    return print("SUCCESS!")
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
