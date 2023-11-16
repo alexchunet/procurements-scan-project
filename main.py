@@ -37,7 +37,7 @@ def main():
     print("Options added")
     
     # Initialize a new browser
-    browser = webdriver.Chrome(service=service, options=options)
+    browser = webdriver.Chrome(service=service, options=chrome_options)
     
     print("Browser initialized")
 
