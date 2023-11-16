@@ -66,8 +66,8 @@ def main():
         url = results_df.loc[index, 'url']['url']
     
         browser.get(url)
-        time.sleep(3)
         html = browser.page_source
+        time.sleep(3)
         browser.close()
     
         soup = BeautifulSoup(html, features="html.parser")
