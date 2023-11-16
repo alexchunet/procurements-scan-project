@@ -33,8 +33,11 @@ def main():
     chrome_options.add_argument("window-size=1024,768")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-extensions");
+    chrome_options.add_argument("--dns-prefetch-disable");
+    chrome_options.add_argument("enable-automation")
+    chrome_options.page_load_strategy = 'normal'
     print("Options added")
-    
 
     # Query table
     client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
