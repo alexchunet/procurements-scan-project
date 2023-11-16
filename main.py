@@ -55,12 +55,14 @@ def main():
     results_df = results_df[results_df['submission_date'] >= week_prior]
     # Filter only procurement notices
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
+    # Filter only services
+    results_df = results_df[(results_df['procurement_group_desc'] != 'Works') & (results_df['procurement_group_desc'] != 'Goods')]
     # Open each page in a virtual browser and analyse its content
     results_df['scan'] = 'Not treated'
     print("Main table structured")
 
     # Key words
-    key_words = ['satellite', 'Earth Observation', 'earth observation', 'remote sensing', 'geospatial', ' GIS ', 'imagery', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
+    key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
 
     browser = webdriver.Chrome(service=service, options=chrome_options)
     print("Browser initialized")
