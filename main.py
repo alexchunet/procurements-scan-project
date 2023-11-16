@@ -69,9 +69,8 @@ def main():
     for index, row in results_df.iterrows():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
-        results_df.loc[index, 'url'] = url
+        #results_df.loc[index, 'url'] = url
         # Initialize a new browser
-        #browser = webdriver.Chrome(service=service, options=chrome_options)
         browser.get(url)
         html = browser.page_source
         #time.sleep(2)
@@ -104,7 +103,8 @@ def main():
         else:
             print('no match')
     browser.close()
-    
+
+    print(results_df)
     results_df = results_df[(results_df['scan']=='detected')]
     
     # Notification function #
