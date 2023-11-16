@@ -62,14 +62,13 @@ def main():
     print("Main table structured")
 
     # Key words
-    key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
-
     browser = webdriver.Chrome(service=service, options=chrome_options)
     print("Browser initialized")
     for index, row in results_df.iterrows():
+        key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
-        #results_df.loc[index, 'url'] = url
+        results_df.loc[index, 'url'] = url
         # Initialize a new browser
         browser.get(url)
         html = browser.page_source
@@ -101,6 +100,7 @@ def main():
             results_df.loc[index, 'scan'] = 'error'     
             print("error")
         else:
+            results_df.loc[index, 'scan'] = 'nothing detected'
             print('no match')
     browser.close()
 
