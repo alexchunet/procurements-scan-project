@@ -131,7 +131,7 @@ def main():
         {0}
     </body>
     </html>
-    """.format(df.to_html())
+    """.format(results_df.to_html())
 
     part1 = MIMEText(html, 'html')
     msg.attach(part1)
