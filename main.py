@@ -66,9 +66,9 @@ def main():
         print("Browser initialized")
         browser.get(url)
         html = browser.page_source
-        time.sleep(2)
+        #time.sleep(2)
         #browser.close()
-        time.sleep(2)
+        #time.sleep(2)
     
         soup = BeautifulSoup(html, features="html.parser")
     
