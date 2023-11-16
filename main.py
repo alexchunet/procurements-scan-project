@@ -46,25 +46,22 @@ def main():
     results = client.get("3y7n-xmbj", limit=2000)
     results_df = pd.DataFrame.from_records(results)
     trigger = 0
-    
     # Correct date format
     results_df['submission_date'] = results_df['submission_date'].str.replace('T',' ').str[:-4]
     results_df['submission_date'] = pd.to_datetime(results_df['submission_date'])
-    
     # Filter procurement for last week
     today = pd.to_datetime("today")
     week_prior =  today - datetime.timedelta(weeks=1)
     results_df = results_df[results_df['submission_date'] >= week_prior]
-
     # Filter only procurement notices
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
-    
-    
     # Open each page in a virtual browser and analyse its content
-    
     results_df['scan'] = 'Not treated'
-
     print("Main table structured")
+
+    # Key words
+    key_words = ['satellite', 'Earth Observation', 'earth observation', 'remote sensing', 'geospatial', ' GIS ', 'imagery', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
+
     browser = webdriver.Chrome(service=service, options=chrome_options)
     print("Browser initialized")
     for index, row in results_df.iterrows():
@@ -94,8 +91,6 @@ def main():
         chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
         # drop blank lines
         text = ' '.join(chunk for chunk in chunks if chunk)
-    
-        key_words = [“satellite”, "Earth Observation", “earth observation”, “remote sensing”, “geospatial”, “ GIS ”, “imagery”, “télédétection”, “géospatial”, “satélite”, “teledetección”, “geoespacial”, “observación de la tierra”]
     
         if any(word in text for word in key_words):
             results_df.loc[index, 'scan'] = 'detected'
