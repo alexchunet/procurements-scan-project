@@ -33,13 +33,8 @@ def main():
     chrome_options.add_argument("window-size=1024,768")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    
     print("Options added")
     
-    # Initialize a new browser
-    browser = webdriver.Chrome(service=service, options=chrome_options)
-    
-    print("Browser initialized")
 
     # Query table
     client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
@@ -60,11 +55,15 @@ def main():
     # Open each page in a virtual browser and analyse its content
     
     results_df['scan'] = 'Not treated'
+
+    print("Main table structured")
     
     for index, row in results_df.iterrows():
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
-    
+        # Initialize a new browser
+        browser = webdriver.Chrome(service=service, options=chrome_options)
+        print("Browser initialized")
         browser.get(url)
         html = browser.page_source
         time.sleep(2)
