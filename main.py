@@ -51,7 +51,7 @@ def main():
     results_df['submission_date'] = pd.to_datetime(results_df['submission_date'])
     # Filter procurement for last week
     today = pd.to_datetime("today")
-    week_prior =  today - datetime.timedelta(weeks=4)
+    week_prior =  today - datetime.timedelta(days=7)
     results_df = results_df[results_df['submission_date'] >= week_prior]
     # Filter only procurement notices
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
@@ -64,7 +64,7 @@ def main():
 
     # Key words
     browser = webdriver.Chrome(service=service, options=chrome_options)
-    key_words = ['NIRA is, inter alia', 'earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
+    key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
 
     # Initialize browser
     browser = webdriver.Chrome(service=service, options=chrome_options)
