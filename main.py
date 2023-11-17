@@ -51,7 +51,7 @@ def main():
     results_df['submission_date'] = pd.to_datetime(results_df['submission_date'])
     # Filter procurement for last week
     today = pd.to_datetime("today")
-    week_prior =  today - datetime.timedelta(weeks=1)
+    week_prior =  today - datetime.timedelta(weeks=4)
     results_df = results_df[results_df['submission_date'] >= week_prior]
     # Filter only procurement notices
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
@@ -142,7 +142,7 @@ def main():
     if trigger == 1:
         send_email('Query found', msg.as_string())
     else:
-        send_email('No query found', 'no query found')
+        send_email('No query found', msg.as_string())
     
     return print("SUCCESS!")
 
