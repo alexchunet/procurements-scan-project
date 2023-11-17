@@ -60,7 +60,7 @@ def main():
     # Open each page in a virtual browser and analyse its content
     results_df['scan'] = 'Not treated'
     print
-    print("Main table structured: "+len(results_df.index)+"rows")
+    print("Main table structured: "+str(len(results_df.index))+"rows")
 
     # Key words
     browser = webdriver.Chrome(service=service, options=chrome_options)
