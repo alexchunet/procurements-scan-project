@@ -108,7 +108,6 @@ def main():
             print('no match')
     browser.close()
 
-    print(results_df)
     results_df = results_df[(results_df['scan']=='detected')]
     
     # Notification function #
