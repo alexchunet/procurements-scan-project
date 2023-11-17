@@ -59,13 +59,17 @@ def main():
     results_df = results_df[(results_df['procurement_group_desc'] != 'Works') & (results_df['procurement_group_desc'] != 'Goods')]
     # Open each page in a virtual browser and analyse its content
     results_df['scan'] = 'Not treated'
-    print("Main table structured")
+    print
+    print("Main table structured: "+len(results_df.index)+"rows")
 
     # Key words
     browser = webdriver.Chrome(service=service, options=chrome_options)
+    key_words = ['NIRA is, inter alia', 'earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
+
+    # Initialize browser
+    browser = webdriver.Chrome(service=service, options=chrome_options)
     print("Browser initialized")
     for index, row in results_df.iterrows():
-        key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
         print(results_df.loc[index, 'url']['url'])
         url = results_df.loc[index, 'url']['url']
         results_df.loc[index, 'url'] = url
@@ -129,7 +133,7 @@ def main():
     <html>
     <head></head>
     <body>
-        <p1>Keywords used: ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical']</p1>
+        <p1>Keywords used: ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']</p1>
         {0}
     </body>
     </html>
@@ -143,8 +147,9 @@ def main():
         send_email('Query found', msg.as_string())
     else:
         send_email('No query found', msg.as_string())
-    
-    return print("SUCCESS!")
+        
+    print("SUCCESS!")
+    return '', 200
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
