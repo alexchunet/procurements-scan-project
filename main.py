@@ -42,7 +42,7 @@ def main():
     print("Options added")
 
     # Query table
-    client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username="achunet@worldbank.org", password="19920JOkeR19920")
+    client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username=os.environ['email_pwb'], password=os.environ['pass_pwb'])
     results = client.get("3y7n-xmbj", limit=2000)
     results_df = pd.DataFrame.from_records(results)
     trigger = 0
