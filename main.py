@@ -117,7 +117,7 @@ def main():
     msg = MIMEMultipart()
     msg['Subject'] = "WB Project Procurements screening"
     sender = 'alex.chunet@gmail.com'
-    recipients = ['alex.chunet@gmail.com','achunet@worldbank.org','alex.chunet@esa.int'] #'christoph.aubrecht@esa.int'
+    recipients = ['alex.chunet@gmail.com','achunet@worldbank.org','alex.chunet@esa.int', 'nicki@cariboudigital.net', 'carlotta@cariboudigital.net'] #'christoph.aubrecht@esa.int'
     emaillist = [elem.strip().split(',') for elem in recipients]
 
     def send_email(sbjt, msg):
