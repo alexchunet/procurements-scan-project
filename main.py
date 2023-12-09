@@ -109,12 +109,15 @@ def main():
     browser.close()
 
     results_df = results_df[(results_df['scan']=='detected')]
+    results_df = results_df[['notice_type', 'project_id', 'bid_description', 'major_sector', 'url', 'submission_date', 'deadline_date', 'procurement_method_name', 'country_name', 'regionname']]
+    results_df = results_df.rename(columns={'url': 'Link', 'notice_type': 'Notice Type', 'submission_date' : 'Published Date', 'project_id' : 'Project ID', 'bid_description' : 'Description', 'procurement_method_name' : 'Procurement Method', 'deadline_date' : 'Submission Deadline', 'country_name' : 'Country', 'regionname' : 'Region', 'major_sector' : 'Major Sector'})
+    results_df = results_df.reset_index(drop=True)
     
     # Notification function #
     msg = MIMEMultipart()
     msg['Subject'] = "WB Project Procurements screening"
     sender = 'alex.chunet@gmail.com'
-    recipients = ['alex.chunet@gmail.com','achunet@worldbank.org','alex.chunet@esa.int','christoph.aubrecht@esa.int'] 
+    recipients = ['alex.chunet@gmail.com','achunet@worldbank.org','alex.chunet@esa.int'] #'christoph.aubrecht@esa.int'
     emaillist = [elem.strip().split(',') for elem in recipients]
 
     def send_email(sbjt, msg):
