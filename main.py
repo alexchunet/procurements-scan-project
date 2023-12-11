@@ -64,7 +64,7 @@ def main():
 
     # Key words
     browser = webdriver.Chrome(service=service, options=chrome_options)
-    key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'geographic information', 'imagery','geotechnical', 'remote sensing', 'télédétection', 'géospatial', 'satélite', 'teledetección', 'geoespacial', 'observación de la tierra']
+    key_words = ['earth observation', 'Earth Observation', ' EO ', ' GIS ', 'geospatial', 'Geospatial', 'geographic information', 'Geographic information', 'imagery', 'Imagery', 'geotechnical', 'Geotechnical', 'remote sensing', 'Remote sensing', 'satellite', 'Satellite', 'télédétection', 'Télédétection', 'géospatial', 'Géospatial', 'satélite', 'Satélite', 'teledetección', 'Teledetección', 'geoespacial', 'Geoespacial', 'observación de la tierra', 'Observación de la tierra']
 
     # Initialize browser
     browser = webdriver.Chrome(service=service, options=chrome_options)
