@@ -1,3 +1,3 @@
-# Procurements-scan-project
+# Procurements scan project
 
-Automated pipeline to review WB procurements and detect specific words.
+Automated pipeline to screen WB project procurements for specific EO-related keywords.
