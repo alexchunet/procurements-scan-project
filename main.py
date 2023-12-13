@@ -57,7 +57,7 @@ def main():
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
     # Filter only services
     results_df = results_df[(results_df['procurement_group_desc'] != 'Works') & (results_df['procurement_group_desc'] != 'Goods')]
-    # Open each page in a virtual browser and analyse its content
+    # Add treatment column
     results_df['scan'] = 'Not treated'
     print
     print("Main table structured: "+str(len(results_df.index))+"rows")
@@ -66,7 +66,7 @@ def main():
     browser = webdriver.Chrome(service=service, options=chrome_options)
     key_words = ['earth observation', 'Earth Observation', 'EO ', 'GIS ', ' GIS', 'geospatial', 'Geospatial', 'geographic information', 'Geographic information', 'imagery', 'Imagery', 'geotechnical', 'Geotechnical', 'remote sensing', 'Remote sensing', 'satellite', 'Satellite', 'télédétection', 'Télédétection', 'géospatial', 'Géospatial', 'SIG', 'satélite', 'Satélite', 'teledetección', 'Teledetección', 'geoespacial', 'Geoespacial', 'observación de la tierra', 'Observación de la tierra']
 
-    # Initialize browser
+    # Initialize browser and screen each page for the keywords
     browser = webdriver.Chrome(service=service, options=chrome_options)
     print("Browser initialized")
     for index, row in results_df.iterrows():
@@ -76,9 +76,6 @@ def main():
         # Initialize a new browser
         browser.get(url)
         html = browser.page_source
-        #time.sleep(2)
-        #browser.close()
-        #time.sleep(2)
     
         soup = BeautifulSoup(html, features="html.parser")
     
