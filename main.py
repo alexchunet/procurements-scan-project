@@ -133,7 +133,7 @@ def main():
     <html>
     <head></head>
     <body>
-        <p1>Keywords used: key_words = ['earth observation', 'Earth Observation', 'EO ', 'GIS ', ' GIS', 'geospatial', 'Geospatial', 'geographic information', 'Geographic information', 'imagery', 'Imagery', 'geotechnical', 'Geotechnical', 'remote sensing', 'Remote sensing', 'satellite', 'Satellite', 'télédétection', 'Télédétection', 'géospatial', 'Géospatial', 'SIG', 'satélite', 'Satélite', 'teledetección', 'Teledetección', 'geoespacial', 'Geoespacial', 'observación de la tierra', 'Observación de la tierra']</p1>
+        <p1>Keywords used: key_words = ['earth observation', 'Earth Observation', ' EO ', 'GIS ', ' GIS', 'geospatial', 'Geospatial', 'geographic information', 'Geographic information', 'imagery', 'Imagery', 'geotechnical', 'Geotechnical', 'remote sensing', 'Remote sensing', 'satellite', 'Satellite', 'télédétection', 'Télédétection', 'géospatial', 'Géospatial', 'SIG', 'satélite', 'Satélite', 'teledetección', 'Teledetección', 'geoespacial', 'Geoespacial', 'observación de la tierra', 'Observación de la tierra']</p1>
         {0}
     </body>
     </html>
