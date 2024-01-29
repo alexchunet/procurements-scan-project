@@ -43,16 +43,14 @@ def main():
 
     # Query table
     client = Socrata("finances.worldbank.org", '4lAjROKl9GysVT07fl34yIlL4', username=os.environ['email_pwb'], password=os.environ['pass_pwb'])
-    results = client.get("3y7n-xmbj", limit=2000)
+    today = pd.to_datetime("today")
+    week_prior =  today - datetime.timedelta(days=7)
+    results = client.get("3y7n-xmbj", where=str('submission_date >'+"'"+str(week_prior.date())+"'"))
     results_df = pd.DataFrame.from_records(results)
     trigger = 0
     # Correct date format
     results_df['submission_date'] = results_df['submission_date'].str.replace('T',' ').str[:-4]
     results_df['submission_date'] = pd.to_datetime(results_df['submission_date'])
-    # Filter procurement for last week
-    today = pd.to_datetime("today")
-    week_prior =  today - datetime.timedelta(days=7)
-    results_df = results_df[results_df['submission_date'] >= week_prior]
     # Filter only procurement notices
     results_df = results_df[results_df['notice_type'] != 'Contract Award']
     # Filter only services
